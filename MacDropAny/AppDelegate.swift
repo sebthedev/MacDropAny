@@ -78,6 +78,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     @IBAction func theOpenDonatePage(sender: AnyObject) {
         NSWorkspace.sharedWorkspace().openURL(NSURL(string: "http://donate.zibity.com")!)
+        shell("/usr/bin/defaults",arguments: ["write", "com.zibity.donate","runcount","1407"])
     }
     
     @IBAction func theOpenHelpPage(sender: AnyObject) {
