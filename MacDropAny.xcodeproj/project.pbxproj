@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9E03C8CE1ABEB18B0049BE43 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E03C8CD1ABEB18B0049BE43 /* Sparkle.framework */; };
+		9E03C8CF1ABEB21F0049BE43 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9E03C8CD1ABEB18B0049BE43 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9E135CC31A79CA1A004BA290 /* checkModifierKeys in Resources */ = {isa = PBXBuildFile; fileRef = 9E135CC21A79CA1A004BA290 /* checkModifierKeys */; };
 		9E4822B51A59F01C005405D7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9E4822B71A59F01C005405D7 /* Main.storyboard */; };
 		9E5DAFCA1A5694B200137B6E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E5DAFC91A5694B200137B6E /* AppDelegate.swift */; };
@@ -15,9 +17,7 @@
 		9E5DAFEB1A56952900137B6E /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 9E5DAFE61A56952900137B6E /* Credits.rtf */; };
 		9E5DAFEC1A56952900137B6E /* MacDropAny Donation Requester.app in Resources */ = {isa = PBXBuildFile; fileRef = 9E5DAFE71A56952900137B6E /* MacDropAny Donation Requester.app */; };
 		9E5DAFED1A56952900137B6E /* MacDropAny.icns in Resources */ = {isa = PBXBuildFile; fileRef = 9E5DAFE81A56952900137B6E /* MacDropAny.icns */; };
-		9E5DAFEE1A56952900137B6E /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E5DAFE91A56952900137B6E /* Sparkle.framework */; };
 		9E5DAFEF1A56952900137B6E /* Sync via MacDropAny.workflow in Resources */ = {isa = PBXBuildFile; fileRef = 9E5DAFEA1A56952900137B6E /* Sync via MacDropAny.workflow */; };
-		9E5DAFF31A5695FC00137B6E /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9E5DAFE91A56952900137B6E /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9E725F051A747F7B004BB96D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9E725F071A747F7B004BB96D /* Localizable.strings */; };
 		9E725F0A1A747F7B004BB96D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9E725F0C1A747F7B004BB96D /* InfoPlist.strings */; };
 /* End PBXBuildFile section */
@@ -29,13 +29,14 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				9E5DAFF31A5695FC00137B6E /* Sparkle.framework in CopyFiles */,
+				9E03C8CF1ABEB21F0049BE43 /* Sparkle.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9E03C8CD1ABEB18B0049BE43 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		9E135CC21A79CA1A004BA290 /* checkModifierKeys */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = checkModifierKeys; sourceTree = "<group>"; };
 		9E4822B61A59F01C005405D7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9E4D68321A9DC4A5002F7498 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -49,7 +50,6 @@
 		9E5DAFE61A56952900137B6E /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		9E5DAFE71A56952900137B6E /* MacDropAny Donation Requester.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; path = "MacDropAny Donation Requester.app"; sourceTree = "<group>"; };
 		9E5DAFE81A56952900137B6E /* MacDropAny.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = MacDropAny.icns; sourceTree = "<group>"; };
-		9E5DAFE91A56952900137B6E /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		9E5DAFEA1A56952900137B6E /* Sync via MacDropAny.workflow */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = "Sync via MacDropAny.workflow"; sourceTree = "<group>"; };
 		9E725F061A747F7B004BB96D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		9E725F0B1A747F7B004BB96D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -67,7 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9E5DAFEE1A56952900137B6E /* Sparkle.framework in Frameworks */,
+				9E03C8CE1ABEB18B0049BE43 /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,8 +120,8 @@
 			isa = PBXGroup;
 			children = (
 				9E5DAFE71A56952900137B6E /* MacDropAny Donation Requester.app */,
-				9E5DAFE91A56952900137B6E /* Sparkle.framework */,
 				9E5DAFEA1A56952900137B6E /* Sync via MacDropAny.workflow */,
+				9E03C8CD1ABEB18B0049BE43 /* Sparkle.framework */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
