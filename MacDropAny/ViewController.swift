@@ -52,6 +52,9 @@ class ViewController: NSViewController {
         
         // Populate theCloudStorageServicePopUp's Menu Items
         var theApplicationsFolderContents = shell("/usr/bin/mdfind", arguments: ["kMDItemKind=Application"])
+        if (theApplicationsFolderContents == "") {
+            var theApplicationsFolderContents = shell("/bin/ls", arguments: ["/Applications"])
+        }
         if NSProcessInfo.processInfo().operatingSystemVersion.majorVersion >= 10 {
             theApplicationsFolderContents += "\niCloud Drive.app"
         }
@@ -73,7 +76,7 @@ class ViewController: NSViewController {
         
         // Retrieve Prefered Sync Service from Defaults
         userDefaults.synchronize()
-        if var LastSyncService = NSUserDefaults.standardUserDefaults().stringForKey("LastSyncService")? {
+        if var LastSyncService = NSUserDefaults.standardUserDefaults().stringForKey("LastSyncService") {
             theCloudStorageServicePopUp.selectItemWithTitle(LastSyncService)
             theSelectedSyncService = theCloudStorageServicePopUp.titleOfSelectedItem!
         }
@@ -90,6 +93,8 @@ class ViewController: NSViewController {
         // Validate Initial Configuration
         validateSyncDetails()
         theWarningButton.hidden = true
+        
+
     }
     
     // Step 1: Choose a folder from button
@@ -100,7 +105,7 @@ class ViewController: NSViewController {
         chooseAFolderPanel.showsHiddenFiles = false
         NSUserDefaults.standardUserDefaults().synchronize()
         if var ShowHiddenFolders: AnyObject = NSUserDefaults.standardUserDefaults().objectForKey("InvisiblesAreShownTick") {
-            if ShowHiddenFolders as NSObject == 1  {
+            if ShowHiddenFolders as! NSObject == 1  {
                 self.chooseAFolderPanel.showsHiddenFiles = true
             }
         }
@@ -115,8 +120,7 @@ class ViewController: NSViewController {
     // Step 1: Choose a folder from drag-and-drop
     func folderDroppedOnDockIcon(sender: AnyObject) {
         println(theChooseAFolderButton.title)
-        chosenLocalFolderProcessor(NSURL(fileURLWithPath: (NSUserDefaults.standardUserDefaults().objectForKey("DroppedFolderPath") as String))!)
-        theChooseAFolderButton.title = theChooseAFolderButton.title
+        chosenLocalFolderProcessor(NSURL(fileURLWithPath: (NSUserDefaults.standardUserDefaults().objectForKey("DroppedFolderPath") as! String))!)
     }
     
     // Step 1: Process chosen folder
@@ -144,8 +148,8 @@ class ViewController: NSViewController {
         if checkModifierKeysPath != nil {
             if shell(checkModifierKeysPath!, arguments: ["option"]) == "1\n" {
                 for thisMenuItem in theCloudStorageServicePopUp.itemArray {
-                    if (thisMenuItem as NSMenuItem).tag != 1407 {
-                        (thisMenuItem as NSMenuItem).enabled = true
+                    if (thisMenuItem as! NSMenuItem).tag != 1407 {
+                        (thisMenuItem as! NSMenuItem).enabled = true
                     }
                 }
             }
@@ -209,10 +213,10 @@ class ViewController: NSViewController {
                     var theMoveFolderAppleScriptErrorDictionary: NSDictionary?
                     theMoveFolderAppleScript.executeAndReturnError(&theMoveFolderAppleScriptErrorDictionary)
                     if theMoveFolderAppleScriptErrorDictionary != nil {
-                        if theMoveFolderAppleScriptErrorDictionary!["NSAppleScriptErrorNumber"]! as NSObject == -128 {
+                        if theMoveFolderAppleScriptErrorDictionary!["NSAppleScriptErrorNumber"]! as! NSObject == -128 {
                             SyncError = NSLocalizedString("The folder you are trying to sync is protected. You must enter your password to allow MacDropAny to sync this folder.", comment:"")
                         } else {
-                            SyncError = (theMoveFolderAppleScriptErrorDictionary!["NSAppleScriptErrorMessage"]! as String)
+                            SyncError = (theMoveFolderAppleScriptErrorDictionary!["NSAppleScriptErrorMessage"]! as! String)
                         }
                     }
                 } else {
@@ -286,7 +290,7 @@ class ViewController: NSViewController {
         
         NSUserDefaults.standardUserDefaults().synchronize()
         if var ShowHiddenFolders: AnyObject = NSUserDefaults.standardUserDefaults().objectForKey("InvisiblesAreShownTick") {
-            if ShowHiddenFolders as NSObject == 1  {
+            if ShowHiddenFolders as! NSObject == 1  {
                 savePanel.showsHiddenFiles = true
             }
         }
@@ -393,7 +397,7 @@ class ViewController: NSViewController {
     
     func addSyncValidationError(theError: String) {
         NSUserDefaults.standardUserDefaults().synchronize()
-        var theErrorBoxText = NSUserDefaults.standardUserDefaults().stringForKey("theErrorBox")?
+        var theErrorBoxText = NSUserDefaults.standardUserDefaults().stringForKey("theErrorBox")
         NSUserDefaults.standardUserDefaults().setObject(theErrorBoxText! + "• " + theError + "\n", forKey: "theErrorBox")
         NSUserDefaults.standardUserDefaults().synchronize()
         theWarningButton.hidden = false
@@ -411,7 +415,7 @@ class ViewController: NSViewController {
         task.launch()
         
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
-        let output: String = NSString(data: data, encoding: NSUTF8StringEncoding)!
+        let output: String = NSString(data: data, encoding: NSUTF8StringEncoding)! as String
         
         return output
     }
@@ -428,7 +432,7 @@ class ViewController: NSViewController {
         task.launch()
         
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
-        let output: String = NSString(data: data, encoding: NSUTF8StringEncoding)!
+        let output: String = NSString(data: data, encoding: NSUTF8StringEncoding)! as String
         
         return output
     }
@@ -437,11 +441,11 @@ class ViewController: NSViewController {
         println(message)
         NSUserDefaults.standardUserDefaults().synchronize()
         if var LogMessages: AnyObject = NSUserDefaults.standardUserDefaults().objectForKey("LogMessages") {
-            if LogMessages as NSObject == 1  {
+            if LogMessages as! NSObject == 1  {
                 if let outputStream = NSOutputStream(toFileAtPath: "~/Library/Logs/MacDropAny.log".stringByExpandingTildeInPath, append: true) {
                     outputStream.open()
                     var theFinalMessage = NSDateFormatter.localizedStringFromDate(NSDate(), dateStyle: .MediumStyle, timeStyle: .ShortStyle) + ": " + message + "\n"
-                    outputStream.write(theFinalMessage, maxLength: countElements(theFinalMessage))
+                    outputStream.write(theFinalMessage, maxLength: count(theFinalMessage))
                     outputStream.close()
                 }
             }

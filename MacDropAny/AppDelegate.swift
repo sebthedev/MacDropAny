@@ -17,6 +17,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         
         Log("Launching MacDropAny")
+        runAppleScript("tell application \"System Events\" to tell process \"MacDropAny\" to set frontmost to true")
         
         // Log Usage Statistics
         NSUserDefaults.standardUserDefaults().synchronize()
@@ -30,7 +31,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             Log("Running first run tasks")
             
             // Log Growth Statistics
-            runAppleScript("do shell script \"curl -L -m 15 http://is.gd/MDA3growth > /dev/null 2>&1 &\"")
+            if let DevMode: AnyObject = NSUserDefaults.standardUserDefaults().objectForKey("DevMode") {} else {
+                runAppleScript("do shell script \"curl -L -m 15 http://is.gd/MDA3growth > /dev/null 2>&1 &\"")
+            }
             NSUserDefaults.standardUserDefaults().setObject("No", forKey: "FirstRun")
             NSUserDefaults.standardUserDefaults().synchronize()
             
@@ -61,14 +64,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     // Manages Dropping of Folders on the app icon
-    func application(sender: NSApplication, openFile theDroppedFilePath: String) {
+    func application(sender: NSApplication, openFiles theDroppedFilePath: [AnyObject]) {
         Log("Folder dropped on the app icon")
-        NSUserDefaults.standardUserDefaults().setObject(theDroppedFilePath, forKey: "DroppedFolderPath")
+        NSUserDefaults.standardUserDefaults().setObject(theDroppedFilePath[0], forKey: "DroppedFolderPath")
         NSNotificationCenter.defaultCenter().postNotificationName("folderDroppedOnDockIcon", object:self)
-        
     }
     
-    func applicationShouldTerminateAfterLastWindowClosed(NSApplication!) -> Bool {
+    func applicationShouldTerminateAfterLastWindowClosed(NSApplication) -> Bool {
         return true
     }
     
@@ -109,7 +111,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         task.launch()
         
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
-        let output: String = NSString(data: data, encoding: NSUTF8StringEncoding)!
+        let output: String = NSString(data: data, encoding: NSUTF8StringEncoding)! as String
         
         return output
     }
@@ -126,7 +128,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         task.launch()
         
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
-        let output: String = NSString(data: data, encoding: NSUTF8StringEncoding)!
+        let output: String = NSString(data: data, encoding: NSUTF8StringEncoding)! as String
         
         return output
     }
@@ -136,11 +138,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         println(message)
         NSUserDefaults.standardUserDefaults().synchronize()
         if var LogMessages: AnyObject = NSUserDefaults.standardUserDefaults().objectForKey("LogMessages") {
-            if LogMessages as NSObject == 1  {
+            if LogMessages as! NSObject == 1  {
                 if let outputStream = NSOutputStream(toFileAtPath: "~/Library/Logs/MacDropAny.log".stringByExpandingTildeInPath, append: true) {
                     outputStream.open()
                     var theFinalMessage = NSDateFormatter.localizedStringFromDate(NSDate(), dateStyle: .MediumStyle, timeStyle: .ShortStyle) + ": " + message + "\n"
-                    outputStream.write(theFinalMessage, maxLength: countElements(theFinalMessage))
+                    outputStream.write(theFinalMessage, maxLength: count(theFinalMessage))
                     outputStream.close()
                 }
             }
