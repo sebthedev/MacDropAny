@@ -51,14 +51,19 @@ class ViewController: NSViewController {
         theChooseAFolderButton.keyEquivalent = "\r"
         
         // Populate theCloudStorageServicePopUp's Menu Items
-        var theApplicationsFolderContents = shell("/usr/bin/mdfind", arguments: ["kMDItemKind=Application"])
-        if (theApplicationsFolderContents == "") {
-            var theApplicationsFolderContents = shell("/bin/ls", arguments: ["/Applications"])
-        }
-        if NSProcessInfo.processInfo().operatingSystemVersion.majorVersion >= 10 {
-            theApplicationsFolderContents += "\niCloud Drive.app"
-        }
-        for thisSyncService in ["OneDrive","Mega","MediaFire","iCloud Drive","hubiC","Hightail Desktop App","Google Drive","Dropbox","Copy","Box Sync", "Adobe Creative Cloud"] {
+//        var theApplicationsFolderContents = shell("/usr/bin/mdfind", arguments: ["kMDItemKind=Application"])
+//        theApplicationsFolderContents = ""
+//        if (theApplicationsFolderContents == "") {
+//            println("in here")
+////            var theApplicationsFolderContents = shell("/bin/ls", arguments: ["/Applications"])
+//            theApplicationsFolderContents = "OneDrive.app MEGAsync.app MediaFire Desktop.app hubiC.app Hightail Desktop App.app Google Drive.app Dropbox.app Copy.app Box Sync.app Adobe Creative Cloud.app"
+//        }
+//        println(theApplicationsFolderContents)
+//        if NSProcessInfo.processInfo().operatingSystemVersion.majorVersion >= 10 {
+////            theApplicationsFolderContents += "\niCloud Drive.app"
+//        }
+        var theApplicationsFolderContents = "OneDrive.app MEGAsync.app MediaFire Desktop.app hubiC.app Hightail Desktop App.app Google Drive.app Dropbox.app Copy.app Box Sync.app Adobe Creative Cloud.app"
+        for thisSyncService in ["OneDrive","MEGAsync","MediaFire Desktop","iCloud Drive","hubiC","Hightail Desktop App","Google Drive","Dropbox","Copy","Box Sync", "Adobe Creative Cloud"] {
             if theApplicationsFolderContents.rangeOfString(thisSyncService as String + ".app") != nil {
                 theCloudStorageServicePopUp.insertItemWithTitle((thisSyncService as String), atIndex: 1)
                 theCloudStorageServicePopUp.itemWithTitle(thisSyncService as String)?.enabled = true
