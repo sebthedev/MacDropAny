@@ -1,0 +1,23 @@
+{
+  "name": "macdropany",
+  "version": "4.0.0-alpha.0",
+  "description": "Sync any folder on your computer with the cloud.",
+  "main": "main.js",
+  "start": "electron ."
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zibity/MacDropAny.git"
+  },
+  "keywords": [
+    "macdropany"
+  ],
+  "author": "Sebastian Hallum Clarke",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Zibity/MacDropAny/issues"
+  },
+  "homepage": "https://github.com/Zibity/MacDropAny#readme"
+}
