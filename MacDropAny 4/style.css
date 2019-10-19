@@ -1,0 +1,32 @@
+body,
+html
+{
+    height: 100%;
+
+    -webkit-app-region: drag;
+}
+
+body
+{
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+
+    width: 100%;
+    margin: 0;
+
+    text-align: center;
+
+    color: rgba(69, 105, 144, 1);
+    background-color: rgba(17, 75, 95, 1);
+}
+
+#titleBar
+{
+    height: 37px;
+
+    background-color: #fce77d;
+}
+
+button
+{
+    -webkit-app-region: no-drag;
+}
