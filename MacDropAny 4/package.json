@@ -2,10 +2,10 @@
   "name": "macdropany",
   "version": "4.0.0-alpha.0",
   "description": "Sync any folder on your computer with the cloud.",
-  "main": "main.js",
+  "main": "./scripts/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "start": "electron ./scripts/main.js"
   },
   "repository": {
     "type": "git",
@@ -24,6 +24,7 @@
     "electron": "^6.0.12"
   },
   "dependencies": {
-    "basename": "^0.1.2"
+    "basename": "^0.1.2",
+    "jquery": "^3.4.1"
   }
 }

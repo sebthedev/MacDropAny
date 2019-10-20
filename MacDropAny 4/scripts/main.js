@@ -1,4 +1,7 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, ipcMain } = require('electron')
+const fs = require('fs')
+const basename = require('basename')
+const path = require('path')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -17,10 +20,10 @@ function createWindow () {
   })
 
   // and load the index.html of the app.
-  win.loadFile('index.html')
+  win.loadFile('../views/index.html')
 
   // Open the DevTools.
-  // win.webContents.openDevTools()
+  win.webContents.openDevTools()
 
   // Emitted when the window is closed.
   win.on('closed', () => {
@@ -59,18 +62,18 @@ app.on('activate', () => {
 //   console.log('Rename complete!')
 // })
 
-const { ipcMain } = require('electron')
-ipcMain.on('openFolder', (event, path) => {
+ipcMain.on('syncFolder', (event, options) => {
+  console.log(options)
+  // TODO: validate options
+  fs.rename(options.sourceFolder, path.join(options.targetFolder, basename(options.sourceFolder)), (err) => {
+    if (err) throw err
+    console.log('Rename complete!')
+  })
+})
+
+ipcMain.on('chooseFolder', (event, folderChooserID, options) => {
   const { dialog } = require('electron')
+  console.log(options)
 
-  dialog.showOpenDialog(win, {
-    message: 'Choose a Folder to sync with the cloud',
-    defaultPath: require('os').homedir(),
-    buttonLabel: 'Sync this Folder',
-    properties: ['openDirectory']
-  }, paths => respondWithPath(paths))
-
-  function respondWithPath (paths) {
-    event.sender.send('folderData', paths)
-  }
+  dialog.showOpenDialog(win, options, paths => event.sender.send('folderChosen', folderChooserID, paths))
 })
