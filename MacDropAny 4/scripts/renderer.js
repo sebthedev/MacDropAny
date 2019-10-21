@@ -1,18 +1,14 @@
-const fs = require('fs')
+// const fs = require('fs')
 // const path = require('path')
 const { ipcRenderer } = require('electron')
 // let cloudStorageServicesData = {}
 const syncConfiguration = {}
-const basename = require('basename')
 const strings = require('./../scripts/strings')
 
 // const cloudStorageServicesDataPath = '../configurations/cloudStorageServices.json'
 
 document.addEventListener('DOMContentLoaded', function () {
   // document.getElementById('source-folder-chooser').addEventListener('click', chooseFolderClickHandler)
-  document.getElementById('sync-button').addEventListener('click', function () {
-    syncFolder(syncConfiguration)
-  })
   window.$('#sync-button').click(syncStartHandler)
   window.$('.folder-chooser').click(chooseFolderClickHandler)
 })
@@ -112,17 +108,17 @@ ipcRenderer.on('folderChosen', (event, folderChooserID, paths) => {
 //     window.alert('MacDropAny encountered an error fetching the list of supported cloud storage services.')
 //   })
 
-const syncFolder = function (syncConfiguration) {
-// TODO: Validate inputs
-
-  const folderName = basename(syncConfiguration.sourceFolder)
-
-  fs.promises.rename(syncConfiguration.sourceFolder, syncConfiguration.defaultPath + '/' + folderName)
-    .then(function () {
-      window.alert('success')
-    })
-    .catch(function (err) {
-      console.log(err)
-      window.alert('err')
-    })
-}
+// const syncFolder = function (syncConfiguration) {
+// // TODO: Validate inputs
+//
+//   const folderName = basename(syncConfiguration.sourceFolder)
+//
+//   fs.promises.rename(syncConfiguration.sourceFolder, syncConfiguration.defaultPath + '/' + folderName)
+//     .then(function () {
+//       window.alert('success')
+//     })
+//     .catch(function (err) {
+//       console.log(err)
+//       window.alert('err')
+//     })
+// }

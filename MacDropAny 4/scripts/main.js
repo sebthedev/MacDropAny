@@ -1,7 +1,8 @@
-const { app, BrowserWindow, ipcMain } = require('electron')
+const { app, BrowserWindow, ipcMain, dialog } = require('electron')
 const fs = require('fs')
 const basename = require('basename')
 const path = require('path')
+const strings = require('./strings')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -56,24 +57,56 @@ app.on('activate', () => {
   }
 })
 
-// const fs = require('fs')
-// fs.rename('/Users/sebthedev/Desktop', '/Users/sebthedev/Desktop2', (err) => {
-//   if (err) throw err
-//   console.log('Rename complete!')
-// })
-
 ipcMain.on('syncFolder', (event, options) => {
   console.log(options)
   // TODO: validate options
-  fs.rename(options.sourceFolder, path.join(options.targetFolder, basename(options.sourceFolder)), (err) => {
-    if (err) throw err
-    console.log('Rename complete!')
-  })
+
+  const sourcePath = options.sourceFolder
+  const targetPath = path.join(options.targetFolder, basename(options.sourceFolder))
+
+  fs.promises.rename(sourcePath, targetPath)
+    .then(function () {
+      console.log('Rename complete!')
+
+      return fs.promises.symlink(targetPath, sourcePath)
+    })
+    .then(function () {
+      console.log('Symlink complete!')
+      event.sender.send('syncComplete')
+    })
+    .catch(function (err) {
+      console.log(err)
+      return displayDialog({
+        type: 'error',
+        message: 'An error occured while syncing the folder',
+        detail: strings.getString('MacDropAny was unable to sync the folder $0 with $1.\n\nError details: $2', [
+          basename(sourcePath),
+          basename(targetPath),
+          err.message
+        ])
+      })
+    })
+
+  // fs.rename(sourcePath, targetPath, (err) => {
+  //   if (err) {
+  //     console.log(err)
+  //     return displayDialog({
+  //       type: 'error',
+  //       message: 'An error occured while syncing the folder',
+  //       detail: strings.getString('MacDropAny was unable to sync the folder $0 with $1.\n\nError details: $2', [
+  //         basename(sourcePath),
+  //         basename(targetPath),
+  //         err.message
+  //       ])
+  //     })
+  //   }
+  // })
 })
 
-ipcMain.on('chooseFolder', (event, folderChooserID, options) => {
-  const { dialog } = require('electron')
-  console.log(options)
+const displayDialog = function (options) {
+  dialog.showMessageBox(win, options)
+}
 
+ipcMain.on('chooseFolder', (event, folderChooserID, options) => {
   dialog.showOpenDialog(win, options, paths => event.sender.send('folderChosen', folderChooserID, paths))
 })

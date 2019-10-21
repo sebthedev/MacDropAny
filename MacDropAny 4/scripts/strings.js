@@ -13,12 +13,18 @@ const loadStrings = function () {
 }
 const strings = loadStrings()
 
-const getString = function (stringName) {
-  if (strings[stringName]) {
-    return strings[stringName]
-  } else {
-    return 'No String Exists'
+const getString = function (stringName, variables) {
+  let stringToReturn = strings[stringName] || stringName
+  // if (strings[stringName]) {
+  if (variables) {
+    for (const variableIndex in variables) {
+      stringToReturn = stringToReturn.replace('$' + variableIndex, variables[variableIndex])
+    }
   }
+  return stringToReturn
+  // } else {
+  //   return 'No String Exists'
+  // }
 }
 
 const displayPageStrings = function (strings) {
