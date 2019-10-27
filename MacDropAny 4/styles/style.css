@@ -1,3 +1,14 @@
+/*
+grey: rgb(45, 49, 59)
+white: rgb(249, 249, 250)
+blue: rgb(0, 6, 46)
+black: rgb(14, 14, 12)
+
+light blue: rgb(23, 177, 221),
+tomato: rgb(180, 57, 45),
+black: rgb(0,0,3),
+*/
+
 body,
 html
 {
@@ -15,18 +26,32 @@ body
 
     text-align: center;
 
-    color: rgba(69, 105, 144, 1);
-    background-color: rgba(17, 75, 95, 1);
+    color: rgb(0,0,3);
+    background-color: rgb(23, 177, 221);
 }
 
 #titleBar
 {
     height: 37px;
 
-    background-color: #fce77d;
+    background-color: rgb(180, 57, 45);
 }
 
 button
 {
     -webkit-app-region: no-drag;
+}
+
+.btn-primary
+{
+    color: rgb(249, 249, 250);
+    background-color: rgb(180, 57, 45);
+}
+
+
+#titleBar h1
+{
+    font-size: 24px;
+
+    color: rgb(249, 249, 250);
 }

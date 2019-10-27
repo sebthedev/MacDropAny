@@ -4,8 +4,12 @@
   "description": "Sync any folder on your computer with the cloud.",
   "main": "./scripts/main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ./scripts/main.js"
+    "start": "electron-forge start",
+    "inspect": "electron-forge start --inspect-electron",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "lint": "echo \"No linting configured\""
   },
   "repository": {
     "type": "git",
@@ -21,10 +25,35 @@
   },
   "homepage": "https://github.com/Zibity/MacDropAny#readme",
   "devDependencies": {
-    "electron": "^6.0.12"
+    "@electron-forge/cli": "^6.0.0-beta.45",
+    "@electron-forge/maker-deb": "^6.0.0-beta.45",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.45",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.45",
+    "@electron-forge/maker-zip": "^6.0.0-beta.45",
+    "electron": "7.0.0"
   },
   "dependencies": {
     "basename": "^0.1.2",
-    "jquery": "^3.4.1"
+    "jquery": "^3.4.1",
+    "node-cmd": "^3.0.0",
+    "update-electron-app": "^1.5.0"
+  },
+  "config": {
+    "forge": {
+      "packagerConfig": {
+        "darwinDarkModeSupport": true,
+        "name": "MacDropAny",
+        "icon": "img/MacDropAny.icns"
+      },
+      "makers": [{
+        "name": "@electron-forge/maker-zip",
+        "platforms": [
+          "darwin"
+        ],
+        "config": {
+          "name": "MacDropAny"
+        }
+      }]
+    }
   }
 }

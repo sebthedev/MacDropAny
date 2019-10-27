@@ -1,14 +1,18 @@
+console.log('started app macdropany')
 const { app, BrowserWindow, ipcMain, dialog } = require('electron')
 const fs = require('fs')
 const basename = require('basename')
 const path = require('path')
 const strings = require('./strings')
+const cmd = require('node-cmd')
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
+// Run Updater
+// require('update-electron-app')()
+
+// Keep a global reference of the window object
 let win
 
-function createWindow () {
+const createWindow = function () {
   // Create the browser window.
   win = new BrowserWindow({
     width: 800,
@@ -21,10 +25,12 @@ function createWindow () {
   })
 
   // and load the index.html of the app.
-  win.loadFile('../views/index.html')
+  const viewPath = path.resolve(__dirname, '../views/index.html')
+  console.log(viewPath)
+  win.loadFile(viewPath)
 
   // Open the DevTools.
-  win.webContents.openDevTools()
+  // win.webContents.openDevTools()
 
   // Emitted when the window is closed.
   win.on('closed', () => {
@@ -57,6 +63,17 @@ app.on('activate', () => {
   }
 })
 
+const editACLs = function (sourcePath) {
+  return new Promise(function (resolve, reject) {
+    cmd.get(`chmod -a "group:everyone deny delete" "${sourcePath}"`, function (err, data, stderr) {
+      if (err) {
+        console.log(err)
+      }
+      resolve()
+    })
+  })
+}
+
 ipcMain.on('syncFolder', (event, options) => {
   console.log(options)
   // TODO: validate options
@@ -64,7 +81,10 @@ ipcMain.on('syncFolder', (event, options) => {
   const sourcePath = options.sourceFolder
   const targetPath = path.join(options.targetFolder, basename(options.sourceFolder))
 
-  fs.promises.rename(sourcePath, targetPath)
+  editACLs(sourcePath)
+    .then(function () {
+      return fs.promises.rename(sourcePath, targetPath)
+    })
     .then(function () {
       console.log('Rename complete!')
 
@@ -72,7 +92,7 @@ ipcMain.on('syncFolder', (event, options) => {
     })
     .then(function () {
       console.log('Symlink complete!')
-      event.sender.send('syncComplete')
+      event.sender.send('syncComplete', options)
     })
     .catch(function (err) {
       console.log(err)
@@ -86,27 +106,31 @@ ipcMain.on('syncFolder', (event, options) => {
         ])
       })
     })
+})
 
-  // fs.rename(sourcePath, targetPath, (err) => {
-  //   if (err) {
-  //     console.log(err)
-  //     return displayDialog({
-  //       type: 'error',
-  //       message: 'An error occured while syncing the folder',
-  //       detail: strings.getString('MacDropAny was unable to sync the folder $0 with $1.\n\nError details: $2', [
-  //         basename(sourcePath),
-  //         basename(targetPath),
-  //         err.message
-  //       ])
-  //     })
-  //   }
-  // })
+ipcMain.on('displayDialog', (event, options) => {
+  options.event = event
+  displayDialog(options)
 })
 
 const displayDialog = function (options) {
   dialog.showMessageBox(win, options)
+    .then((response) => {
+      if (options && options.event && options.responseHandlerName) {
+        options.event.reply(options.responseHandlerName, response, options)
+      }
+    })
 }
 
 ipcMain.on('chooseFolder', (event, folderChooserID, options) => {
-  dialog.showOpenDialog(win, options, paths => event.sender.send('folderChosen', folderChooserID, paths))
+  dialog.showOpenDialog(win, options, paths => event.reply('folderChosen', folderChooserID, paths))
 })
+
+const { systemPreferences } = require('electron')
+
+systemPreferences.subscribeNotification(
+  'AppleInterfaceThemeChangedNotification',
+  function theThemeHasChanged () {
+    console.log('dark mode ' + systemPreferences.isDarkMode())
+  }
+)

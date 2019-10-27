@@ -1,24 +1,28 @@
 // const fs = require('fs')
-// const path = require('path')
-const { ipcRenderer } = require('electron')
+const path = require('path')
+const {
+  ipcRenderer,
+  shell
+} = require('electron')
 // let cloudStorageServicesData = {}
 const syncConfiguration = {}
 const strings = require('./../scripts/strings')
+const basename = require('basename')
 
 // const cloudStorageServicesDataPath = '../configurations/cloudStorageServices.json'
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
   // document.getElementById('source-folder-chooser').addEventListener('click', chooseFolderClickHandler)
   window.$('#sync-button').click(syncStartHandler)
   window.$('.folder-chooser').click(chooseFolderClickHandler)
 })
 
-const syncStartHandler = function () {
+const syncStartHandler = function() {
   // do some input verification
   ipcRenderer.send('syncFolder', syncConfiguration)
 }
 
-const chooseFolderClickHandler = function (event) {
+const chooseFolderClickHandler = function(event) {
   const folderChooserID = window.$(event.target).data('folder-chooser-id')
   chooseFolder(folderChooserID)
 }
@@ -38,7 +42,7 @@ const folderChooserOptions = {
   }
 }
 
-function chooseFolder (folderChooserID) {
+function chooseFolder(folderChooserID) {
   ipcRenderer.send('chooseFolder', folderChooserID, folderChooserOptions[folderChooserID])
 }
 
@@ -59,66 +63,23 @@ ipcRenderer.on('folderChosen', (event, folderChooserID, paths) => {
   }
 })
 
-// const insertCloudStorageServicesIntoSelect = function (cloudStorageServicesData) {
-//   // Get the select element
-//   const cloudStorageServiceSelectElement = document.getElementById('cloud-storage-service')
-//
-//   for (const cloudStorageService of cloudStorageServicesData) {
-//     // Make a new option element
-//     const cloudStorageServiceOptionElement = document.createElement('option')
-//
-//     // Set the attributes on the new option
-//     cloudStorageServiceOptionElement.innerHTML = cloudStorageService.name
-//
-//     // Insert the new option element into the select element
-//     cloudStorageServiceSelectElement.appendChild(cloudStorageServiceOptionElement)
-//   }
-// }
+ipcRenderer.on('syncCompleteDialogDismissHandler', (event, response, options) => {
+  if (response && 'response' in response && response.response === 1 && options && options.targetFolderPath) {
+    shell.showItemInFolder(options.targetFolderPath)
+  }
+})
 
-// Load the list of supported cloud storage services
-
-// const localeStringsPath = path.join(__dirname, '../strings/' + app.getLocale() + '.json')
-// if (fs.existsSync(localeStringsPath)) {
-//   return JSON.parse(fs.readFileSync(localeStringsPath, 'utf8'))
-// } else {
-//   return JSON.parse(fs.readFileSync(path.join(__dirname, '../strings/en.json'), 'utf8'))
-// }
-
-// fs.promises.readFile(cloudStorageServicesDataPath, 'utf8')
-// fs.promises.readFile(path.join(__dirname, '../configurations/cloudStorageServices.json'), 'utf8')
-//   // Parse the JSON
-//   .then(function (cloudStorageServicesDataRaw) {
-//     return new Promise(function (resolve, reject) {
-//       try {
-//         // Parse the JSON string
-//         cloudStorageServicesData = JSON.parse(cloudStorageServicesDataRaw)
-//         return resolve(cloudStorageServicesData)
-//       } catch (e) {
-//         return reject(e)
-//       }
-//     })
-//   })
-//   // Update the user interface
-//   .then(function (cloudStorageServicesData) {
-//     return insertCloudStorageServicesIntoSelect(cloudStorageServicesData)
-//   })
-//   // Catch any errors
-//   .catch(function (error) {
-//     console.error(error)
-//     window.alert('MacDropAny encountered an error fetching the list of supported cloud storage services.')
-//   })
-
-// const syncFolder = function (syncConfiguration) {
-// // TODO: Validate inputs
-//
-//   const folderName = basename(syncConfiguration.sourceFolder)
-//
-//   fs.promises.rename(syncConfiguration.sourceFolder, syncConfiguration.defaultPath + '/' + folderName)
-//     .then(function () {
-//       window.alert('success')
-//     })
-//     .catch(function (err) {
-//       console.log(err)
-//       window.alert('err')
-//     })
-// }
+const syncComplete = function(event, options) {
+  console.log(options)
+  const sourceFolderName = basename(options.sourceFolder)
+  const targetFolderName = basename(options.targetFolder)
+  ipcRenderer.send('displayDialog', {
+    message: strings.getString('$0 succesfully synced with $1', [sourceFolderName, targetFolderName]),
+    detail: strings.getString('MacDropAny succesfully synced $0 with $1. Any changes to $2 will now automatically be reflected in $3', [sourceFolderName, targetFolderName, sourceFolderName, targetFolderName]),
+    buttons: [strings.getString('Show $0 in $1', [sourceFolderName, targetFolderName]), strings.getString('Close')],
+    defaultId: 0,
+    responseHandlerName: 'syncCompleteDialogDismissHandler',
+    targetFolderPath: path.join(options.targetFolder, basename(options.sourceFolder))
+  })
+}
+ipcRenderer.on('syncComplete', syncComplete)
