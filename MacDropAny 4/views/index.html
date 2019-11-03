@@ -27,31 +27,27 @@
     <div id="titleBar">
       <h1>MacDropAny</h1>
     </div>
-    <!-- <h1>MacDropAny</h1> -->
-    <div class="subtitle" data-string="subtitle">Sync any folder on your Mac with the cloud</div>
+    <div class="subtitle my-2" data-string="subtitle"></div>
     <div class="container">
-      <div class="row">
+      <div class="row step-container align-items-center folder-chooser my-3" data-folder-chooser-id="source">
         <div class="col">
-          <h3>
-            Choose a folder to sync with the cloud:
-          </h3>
-          <button type="button" class="folder-chooser btn btn-primary" data-folder-chooser-id="source">Choose a Folder</button>
-          <p id="source-folder-path"></p>
-        </div>
-        <div class="col">
-          <!-- <h3> Choose a cloud storage service to sync with: </h3> <select name="cloud-storage-service" id="cloud-storage-service"> <option disabled="disabled" selected="selected">Choose service…</option> </select> -->
-          <div class="col">
-            <h3>
-              Choose where in the cloud to store the folder:
-            </h3>
-            <button type="button" class="folder-chooser btn btn-primary" data-folder-chooser-id="target">Choose a Folder</button>
-            <p id="target-folder-path"></p>
+          <div class="step-title">
+            Choose a folder to sync with the cloud
+          </div>
+          <div class="step-subtitle">
+            Drop a folder here or click to choose a folder
           </div>
         </div>
       </div>
-      <div class="row">
+
+      <div class="row step-container align-items-center folder-chooser my-3" data-folder-chooser-id="target">
         <div class="col">
-          <button type="button" class="btn btn-primary" id="sync-button">Sync</button>
+          <div class="step-title">
+            Choose where in the cloud to store the folder
+          </div>
+          <div class="step-subtitle">
+            Drop a cloud folder here or click to choose a cloud folder
+          </div>
         </div>
       </div>
     </div>

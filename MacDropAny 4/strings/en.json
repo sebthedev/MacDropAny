@@ -28,7 +28,9 @@
   "Quit": "Quit",
   "Zoom": "Zoom",
   "Bring all to front": "Bring all to front",
-  "subtitle": "Sync any folder on your Mac with the cloud",
+  "subtitle": "Sync any folder on your computer with the cloud",
   "Choose Folder": "Choose Folder",
-  "Choose a folder to sync with the cloud": "Choose a folder to sync with the cloud"
+  "Choose a folder to sync with the cloud": "Choose a folder to sync with the cloud",
+  "Folder to Sync: SourceFolderName": "Folder to Sync: $0",
+  "Cloud Folder to Sync with: TargetFolderName": "Cloud Folder to Sync with: $0"
 }

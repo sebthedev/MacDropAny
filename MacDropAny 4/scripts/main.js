@@ -1,5 +1,5 @@
 console.log('started app macdropany')
-const { app, BrowserWindow, ipcMain, dialog } = require('electron')
+const { app, BrowserWindow, ipcMain, dialog, nativeTheme } = require('electron')
 const fs = require('fs')
 const basename = require('basename')
 const path = require('path')
@@ -21,22 +21,21 @@ const createWindow = function () {
       nodeIntegration: true
     },
     backgroundColor: '#F96167', //, #FCE77D,
-    titleBarStyle: 'hiddenInset'
+    titleBarStyle: 'hiddenInset',
+    show: false
+  })
+
+  win.once('ready-to-show', () => {
+    sendDarkModeStatus()
+    win.show()
   })
 
   // and load the index.html of the app.
   const viewPath = path.resolve(__dirname, '../views/index.html')
-  console.log(viewPath)
   win.loadFile(viewPath)
-
-  // Open the DevTools.
-  // win.webContents.openDevTools()
 
   // Emitted when the window is closed.
   win.on('closed', () => {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
     win = null
   })
 }
@@ -123,14 +122,15 @@ const displayDialog = function (options) {
 }
 
 ipcMain.on('chooseFolder', (event, folderChooserID, options) => {
-  dialog.showOpenDialog(win, options, paths => event.reply('folderChosen', folderChooserID, paths))
+  dialog.showOpenDialog(win, options).then((cancelled, paths) => {
+    console.log('choseFolder', paths)
+    event.reply('folderChosen', folderChooserID, paths)
+  })
 })
 
-const { systemPreferences } = require('electron')
-
-systemPreferences.subscribeNotification(
-  'AppleInterfaceThemeChangedNotification',
-  function theThemeHasChanged () {
-    console.log('dark mode ' + systemPreferences.isDarkMode())
-  }
-)
+const sendDarkModeStatus = function () {
+  win.webContents.send('darkModeStatus', {
+    shouldUseDarkColors: nativeTheme.shouldUseDarkColors
+  })
+}
+nativeTheme.on('updated', sendDarkModeStatus)

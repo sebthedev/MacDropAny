@@ -4,26 +4,22 @@ const {
   ipcRenderer,
   shell
 } = require('electron')
-// let cloudStorageServicesData = {}
 const syncConfiguration = {}
 const strings = require('./../scripts/strings')
 const basename = require('basename')
 
-// const cloudStorageServicesDataPath = '../configurations/cloudStorageServices.json'
-
-document.addEventListener('DOMContentLoaded', function() {
-  // document.getElementById('source-folder-chooser').addEventListener('click', chooseFolderClickHandler)
+document.addEventListener('DOMContentLoaded', function () {
   window.$('#sync-button').click(syncStartHandler)
   window.$('.folder-chooser').click(chooseFolderClickHandler)
 })
 
-const syncStartHandler = function() {
+const syncStartHandler = function () {
   // do some input verification
   ipcRenderer.send('syncFolder', syncConfiguration)
 }
 
-const chooseFolderClickHandler = function(event) {
-  const folderChooserID = window.$(event.target).data('folder-chooser-id')
+const chooseFolderClickHandler = function (event) {
+  const folderChooserID = window.$(event.target).closest('[data-folder-chooser-id]').data('folder-chooser-id')
   chooseFolder(folderChooserID)
 }
 
@@ -42,21 +38,23 @@ const folderChooserOptions = {
   }
 }
 
-function chooseFolder(folderChooserID) {
+function chooseFolder (folderChooserID) {
   ipcRenderer.send('chooseFolder', folderChooserID, folderChooserOptions[folderChooserID])
 }
 
 ipcRenderer.on('folderChosen', (event, folderChooserID, paths) => {
+  console.log('folderChosen event', folderChooserID)
   if (folderChooserID && paths && paths.length > 0) {
     const path = paths[0]
+    console.log(path)
     switch (folderChooserID) {
       case 'source':
         syncConfiguration.sourceFolder = path
-        document.getElementById('source-folder-path').innerHTML = path
+        window.$('[data-folder-chooser-id="source"] .step-title').text(strings.getString('Folder to Sync: SourceFolderName', [basename(path)]))
         break
       case 'target':
         syncConfiguration.targetFolder = path
-        document.getElementById('target-folder-path').innerHTML = path
+        window.$('[data-folder-chooser-id="target"] .step-title').text(strings.getString('Cloud Folder to Sync with: TargetFolderName', [basename(path)]))
         break
       default:
     }
@@ -69,7 +67,7 @@ ipcRenderer.on('syncCompleteDialogDismissHandler', (event, response, options) =>
   }
 })
 
-const syncComplete = function(event, options) {
+const syncComplete = function (event, options) {
   console.log(options)
   const sourceFolderName = basename(options.sourceFolder)
   const targetFolderName = basename(options.targetFolder)
@@ -83,3 +81,31 @@ const syncComplete = function(event, options) {
   })
 }
 ipcRenderer.on('syncComplete', syncComplete)
+
+window.$(document).ready(function () {
+  document.ondragover = document.ondrop = (ev) => {
+    ev.preventDefault()
+  }
+
+  window.$('.step-container').on('drag dragstart dragend dragover dragenter dragleave drop', function (e) {
+    e.preventDefault()
+    e.stopPropagation()
+  }).on('dragover dragenter', function () {
+    window.$(this).addClass('is-dragover')
+  }).on('dragleave dragend drop', function () {
+    window.$(this).removeClass('is-dragover')
+  }).on('drop', function (e) {
+    console.log(e.originalEvent.dataTransfer.files)
+  })
+})
+
+ipcRenderer.on('darkModeStatus', function (event, data) {
+  if (data && 'shouldUseDarkColors' in data) {
+    if (data.shouldUseDarkColors) {
+      window.$('body').addClass('dark-mode')
+    } else {
+      window.$('body').removeClass('dark-mode')
+    }
+  }
+  console.log(data.msg)
+})

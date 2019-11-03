@@ -9,6 +9,11 @@ tomato: rgb(180, 57, 45),
 black: rgb(0,0,3),
 */
 
+/*
+BLUE: #89ABE3
+WHITE: #FCF6F5
+ */
+
 body,
 html
 {
@@ -24,17 +29,78 @@ body
     width: 100%;
     margin: 0;
 
+    transition-duration: .5s;
+    transition-property: : background-color, color;
     text-align: center;
 
-    color: rgb(0,0,3);
-    background-color: rgb(23, 177, 221);
+    color: #00223e;
+    background-color: #deedf9;
 }
+
+body.dark-mode
+{
+    color: #deedf9;
+    background-color: #0c2941;;
+}
+
+.step-container
+{
+    padding: 10px;
+
+    cursor: pointer;
+    transition-duration: 200ms;
+    transition-property: background-color, color, border;
+
+    border: 2px dashed #00223e88;
+    border-radius: 10px;
+}
+
+.step-container:hover,
+.step-container.is-dragover
+{
+    color: #deedf9;
+    border: 2px solid #2460a7;
+    background-color: #2460a7;
+    /* border-color: #2460a7; */
+}
+
+.step-container.is-dragover
+{
+    cursor: copy;
+    animation: pulse .2s infinite;
+    animation-direction: alternate;
+
+    border-style: dashed;
+}
+
+@keyframes pulse
+{
+    0%
+    {
+        border-color: white;
+    }
+    100%
+    {
+        border-color: #2460a7;
+    }
+}
+
+.step-title
+{
+    font-size: 20px;
+}
+
 
 #titleBar
 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     height: 37px;
 
-    background-color: rgb(180, 57, 45);
+    color: #deedf9;
+    background-color: #2460a7;
 }
 
 button
@@ -42,16 +108,15 @@ button
     -webkit-app-region: no-drag;
 }
 
-.btn-primary
-{
-    color: rgb(249, 249, 250);
-    background-color: rgb(180, 57, 45);
-}
-
-
 #titleBar h1
 {
-    font-size: 24px;
+    font-size: 18px;
 
-    color: rgb(249, 249, 250);
+    margin: 0;
+}
+
+.btn-primary
+{
+    color: #fcf6f5;
+    background-color: #89abe3;
 }
