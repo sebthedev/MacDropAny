@@ -46,15 +46,17 @@
         "name": "MacDropAny",
         "icon": "img/MacDropAny.icns"
       },
-      "makers": [{
-        "name": "@electron-forge/maker-zip",
-        "platforms": [
-          "darwin"
-        ],
-        "config": {
-          "name": "MacDropAny"
+      "makers": [
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ],
+          "config": {
+            "name": "MacDropAny"
+          }
         }
-      }]
+      ]
     }
   }
 }

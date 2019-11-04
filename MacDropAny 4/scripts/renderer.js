@@ -10,10 +10,15 @@ const syncer = require('./../scripts/syncer')
 const basename = require('basename')
 
 // Make jQuery global
-let $
+let $ = function () {
+  console.error('jQuery is not defined')
+}
 
 document.addEventListener('DOMContentLoaded', function () {
+  // Save reference to jQuery
   $ = window.$
+
+  // Attach event listeners
   $('#sync-button').click(syncStartHandler)
   $('.folder-chooser').click(chooseFolderClickHandler)
   manageDragAndDrop()
@@ -26,7 +31,7 @@ const syncStartHandler = function () {
 }
 
 const chooseFolderClickHandler = function (event) {
-  const folderChooserID = $(event.target).closest('[data-folder-chooser-id]').data('folder-chooser-id')
+  const folderChooserID = $(event.target).closest('.folder-chooser').data('folder-chooser-id')
   chooseFolder(folderChooserID)
 }
 
@@ -92,7 +97,6 @@ ipcRenderer.on('syncCompleteDialogDismissHandler', (event, response, options) =>
 })
 
 const syncComplete = function (event, options) {
-  console.log(options)
   const sourceFolderName = basename(options.sourceFolder)
   const targetFolderName = basename(options.targetFolder)
   ipcRenderer.send('displayDialog', {
