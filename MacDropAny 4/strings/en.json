@@ -31,6 +31,11 @@
   "subtitle": "Sync any folder on your computer with the cloud",
   "Choose Folder": "Choose Folder",
   "Choose a folder to sync with the cloud": "Choose a folder to sync with the cloud",
-  "Folder to Sync: SourceFolderName": "Folder to Sync: $0",
-  "Cloud Folder to Sync with: TargetFolderName": "Cloud Folder to Sync with: $0"
+  "source-folder-chooser-title-folder-chosen": "Folder to Sync: $0",
+  "target-folder-chooser-title-folder-chosen": "Cloud Folder to Sync with: $0",
+  "step-subtitle-start": "Drop a folder here or click to choose a folder",
+  "step-subtitle-folder-selected": "Click to choose a different folder",
+  "sync-folder": "Sync Folder",
+  "sync-button-source-target": "Sync $0 with $1",
+  "sync-button-source": "Sync $0 with…"
 }

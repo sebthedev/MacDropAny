@@ -6,20 +6,27 @@ const {
 } = require('electron')
 const syncConfiguration = {}
 const strings = require('./../scripts/strings')
+const syncer = require('./../scripts/syncer')
 const basename = require('basename')
 
+// Make jQuery global
+let $
+
 document.addEventListener('DOMContentLoaded', function () {
-  window.$('#sync-button').click(syncStartHandler)
-  window.$('.folder-chooser').click(chooseFolderClickHandler)
+  $ = window.$
+  $('#sync-button').click(syncStartHandler)
+  $('.folder-chooser').click(chooseFolderClickHandler)
+  manageDragAndDrop()
 })
 
 const syncStartHandler = function () {
-  // do some input verification
-  ipcRenderer.send('syncFolder', syncConfiguration)
+  if (syncer.validateSyncConfiguration(syncConfiguration)) {
+    ipcRenderer.send('syncFolder', syncConfiguration)
+  }
 }
 
 const chooseFolderClickHandler = function (event) {
-  const folderChooserID = window.$(event.target).closest('[data-folder-chooser-id]').data('folder-chooser-id')
+  const folderChooserID = $(event.target).closest('[data-folder-chooser-id]').data('folder-chooser-id')
   chooseFolder(folderChooserID)
 }
 
@@ -43,28 +50,45 @@ function chooseFolder (folderChooserID) {
 }
 
 ipcRenderer.on('folderChosen', (event, folderChooserID, paths) => {
-  console.log('folderChosen event', folderChooserID)
   if (folderChooserID && paths && paths.length > 0) {
+    // Extract the folder path and name
     const path = paths[0]
-    console.log(path)
-    switch (folderChooserID) {
-      case 'source':
-        syncConfiguration.sourceFolder = path
-        window.$('[data-folder-chooser-id="source"] .step-title').text(strings.getString('Folder to Sync: SourceFolderName', [basename(path)]))
-        break
-      case 'target':
-        syncConfiguration.targetFolder = path
-        window.$('[data-folder-chooser-id="target"] .step-title').text(strings.getString('Cloud Folder to Sync with: TargetFolderName', [basename(path)]))
-        break
-      default:
-    }
+    const folderName = basename(path)
+
+    // Save the folder path
+    syncConfiguration[`${folderChooserID}Folder`] = path
+
+    // Update the appearance and text of the relevant folder chooser element
+    const folderChooserElement = $(`[data-folder-chooser-id="${folderChooserID}"]`)
+    folderChooserElement.addClass('folder-chosen')
+
+    folderChooserElement.find('.step-title').text(strings.getString(`${folderChooserID}-folder-chooser-title-folder-chosen`, [folderName]))
+
+    folderChooserElement.find('.step-subtitle').text(strings.getString('step-subtitle-folder-selected'))
+
+    updateSyncButton()
   }
 })
 
+const updateSyncButton = function () {
+  const syncButton = $('#sync-button')
+  const syncConfigurationValidity = syncer.validateSyncConfiguration(syncConfiguration)
+  syncButton.toggleClass('disabled', !syncConfigurationValidity)
+
+  if (syncConfiguration.sourceFolder && syncConfiguration.targetFolder) {
+    syncButton.text(strings.getString('sync-button-source-target', [basename(syncConfiguration.sourceFolder), basename(syncConfiguration.targetFolder)]))
+  } else if (syncConfiguration.sourceFolder) {
+    syncButton.text(strings.getString('sync-button-source', [basename(syncConfiguration.sourceFolder)]))
+  } else {
+    syncButton.text(strings.getString('sync-button'))
+  }
+}
+
 ipcRenderer.on('syncCompleteDialogDismissHandler', (event, response, options) => {
-  if (response && 'response' in response && response.response === 1 && options && options.targetFolderPath) {
+  if (response && 'response' in response && response.response === 0 && options && options.targetFolderPath) {
     shell.showItemInFolder(options.targetFolderPath)
   }
+  window.location.reload()
 })
 
 const syncComplete = function (event, options) {
@@ -82,29 +106,29 @@ const syncComplete = function (event, options) {
 }
 ipcRenderer.on('syncComplete', syncComplete)
 
-window.$(document).ready(function () {
+const manageDragAndDrop = function () {
   document.ondragover = document.ondrop = (ev) => {
     ev.preventDefault()
   }
 
-  window.$('.step-container').on('drag dragstart dragend dragover dragenter dragleave drop', function (e) {
+  $('.step-container').on('drag dragstart dragend dragover dragenter dragleave drop', function (e) {
     e.preventDefault()
     e.stopPropagation()
   }).on('dragover dragenter', function () {
-    window.$(this).addClass('is-dragover')
+    $(this).addClass('is-dragover')
   }).on('dragleave dragend drop', function () {
-    window.$(this).removeClass('is-dragover')
+    $(this).removeClass('is-dragover')
   }).on('drop', function (e) {
     console.log(e.originalEvent.dataTransfer.files)
   })
-})
+}
 
 ipcRenderer.on('darkModeStatus', function (event, data) {
   if (data && 'shouldUseDarkColors' in data) {
     if (data.shouldUseDarkColors) {
-      window.$('body').addClass('dark-mode')
+      $('body').addClass('dark-mode')
     } else {
-      window.$('body').removeClass('dark-mode')
+      $('body').removeClass('dark-mode')
     }
   }
   console.log(data.msg)

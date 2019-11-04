@@ -1,5 +1,11 @@
 console.log('started app macdropany')
-const { app, BrowserWindow, ipcMain, dialog, nativeTheme } = require('electron')
+const {
+  app,
+  BrowserWindow,
+  ipcMain,
+  dialog,
+  nativeTheme
+} = require('electron')
 const fs = require('fs')
 const basename = require('basename')
 const path = require('path')
@@ -15,8 +21,8 @@ let win
 const createWindow = function () {
   // Create the browser window.
   win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 600,
+    height: 350,
     webPreferences: {
       nodeIntegration: true
     },
@@ -122,9 +128,9 @@ const displayDialog = function (options) {
 }
 
 ipcMain.on('chooseFolder', (event, folderChooserID, options) => {
-  dialog.showOpenDialog(win, options).then((cancelled, paths) => {
-    console.log('choseFolder', paths)
-    event.reply('folderChosen', folderChooserID, paths)
+  dialog.showOpenDialog(win, options).then(result => {
+    console.log('choseFolder: ', result.filePaths)
+    event.reply('folderChosen', folderChooserID, result.filePaths)
   })
 })
 

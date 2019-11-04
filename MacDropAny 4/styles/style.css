@@ -14,6 +14,13 @@ BLUE: #89ABE3
 WHITE: #FCF6F5
  */
 
+/*
+off-white: #deedf9;
+dark-blue: #2460a7;
+green: #24a0a7;
+grey: #566d84;
+  */
+
 body,
 html
 {
@@ -43,6 +50,27 @@ body.dark-mode
     background-color: #0c2941;;
 }
 
+/* Title Bar */
+#titleBar
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 37px;
+
+    color: #fff;
+    background-color: #2460a7;
+}
+
+#titleBar h1
+{
+    font-size: 18px;
+
+    margin: 0;
+}
+
+/* Step Container Styling */
 .step-container
 {
     padding: 10px;
@@ -51,17 +79,42 @@ body.dark-mode
     transition-duration: 200ms;
     transition-property: background-color, color, border;
 
-    border: 2px dashed #00223e88;
+    border-width: 2px;
+    border-style: dashed;
+    border-color: #566d84;
     border-radius: 10px;
+}
+
+.step-title
+{
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.step-subtitle
+{
+    opacity: .75;
+}
+
+.step-container:hover,
+.step-container.is-dragover,
+.step-container.folder-chosen
+{
+    color: #fff;
+    border-style: solid;
 }
 
 .step-container:hover,
 .step-container.is-dragover
 {
-    color: #deedf9;
-    border: 2px solid #2460a7;
+    border-color: #2460a7;
     background-color: #2460a7;
-    /* border-color: #2460a7; */
+}
+
+.step-container.folder-chosen
+{
+    border-color: #24a0a7;
+    background-color: #24a0a7;
 }
 
 .step-container.is-dragover
@@ -85,38 +138,35 @@ body.dark-mode
     }
 }
 
-.step-title
-{
-    font-size: 20px;
-}
-
-
-#titleBar
-{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    height: 37px;
-
-    color: #deedf9;
-    background-color: #2460a7;
-}
-
+/* Sync Button */
 button
 {
     -webkit-app-region: no-drag;
 }
 
-#titleBar h1
-{
-    font-size: 18px;
-
-    margin: 0;
-}
-
 .btn-primary
 {
-    color: #fcf6f5;
-    background-color: #89abe3;
+    color: #deedf9;
+    color: #fff;
+    border: none;
+    background-color: #2460a7;
+}
+
+.btn-primary:not(:disabled):not(.disabled):hover,
+.btn-primary:not(:disabled):not(.disabled):active
+{
+    background-color: #24a0a7;
+}
+
+.btn-primary.focus,
+.btn-primary:focus
+{
+    box-shadow: none;
+}
+
+.btn-primary.disabled
+{
+    cursor: not-allowed;
+
+    background-color: #566d84;
 }
