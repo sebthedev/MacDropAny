@@ -1,8 +1,9 @@
 {
   "name": "macdropany",
+  "productName": "MacDropAny",
   "version": "4.0.0-alpha.0",
   "description": "Sync any folder on your computer with the cloud.",
-  "main": "./scripts/main.js",
+  "main": "scripts/main.js",
   "scripts": {
     "start": "electron-forge start",
     "inspect": "electron-forge start --inspect-electron",

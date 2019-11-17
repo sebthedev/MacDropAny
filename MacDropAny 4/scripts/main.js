@@ -51,6 +51,10 @@ const createWindow = function () {
 // Some APIs can only be used after this event occurs.
 app.on('ready', createWindow)
 
+app.on('ready', function () {
+  require('./menu')
+})
+
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
   // On macOS it is common for applications and their menu bar

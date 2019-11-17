@@ -1,10 +1,16 @@
 const fs = require('fs')
 const path = require('path')
+// const {
+//   app
+// } = require('electron')
 const electron = require('electron')
 const app = electron.app ? electron.app : electron.remote.app
 
+console.log(`Locale is ${app.getLocale()}.`)
+
 const loadStrings = function () {
   const localeStringsPath = path.join(__dirname, '../strings/' + app.getLocale() + '.json')
+  console.log(localeStringsPath)
   if (fs.existsSync(localeStringsPath)) {
     return JSON.parse(fs.readFileSync(localeStringsPath, 'utf8'))
   } else {
@@ -15,16 +21,12 @@ const strings = loadStrings()
 
 const getString = function (stringName, variables) {
   let stringToReturn = strings[stringName] || stringName
-  // if (strings[stringName]) {
   if (variables) {
     for (const variableIndex in variables) {
       stringToReturn = stringToReturn.replace('$' + variableIndex, variables[variableIndex])
     }
   }
   return stringToReturn
-  // } else {
-  //   return 'No String Exists'
-  // }
 }
 
 const displayPageStrings = function (strings) {
@@ -43,5 +45,6 @@ module.exports = {
   displayPageStrings: function () {
     displayPageStrings(strings)
   },
-  getString: getString
+  getString: getString,
+  get: getString
 }
