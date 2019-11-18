@@ -1,7 +1,7 @@
 {
   "name": "macdropany",
   "productName": "MacDropAny",
-  "version": "4.0.0-alpha.0",
+  "version": "4.0.0",
   "description": "Sync any folder on your computer with the cloud.",
   "main": "scripts/main.js",
   "scripts": {
@@ -32,7 +32,7 @@
     "@electron-forge/maker-rpm": "^6.0.0-beta.45",
     "@electron-forge/maker-squirrel": "^6.0.0-beta.45",
     "@electron-forge/maker-zip": "^6.0.0-beta.45",
-    "electron": "7.0.0"
+    "electron": "^7.1.1"
   },
   "dependencies": {
     "basename": "^0.1.2",
@@ -45,19 +45,38 @@
       "packagerConfig": {
         "darwinDarkModeSupport": true,
         "name": "MacDropAny",
-        "icon": "img/MacDropAny.icns"
+        "icon": "img/MacDropAny.icns",
+        "osxSign": {
+          "entitlements": "configurations/mac-entitlements.plist",
+          "entitlements-inherit": "configurations/mac-entitlements.plist",
+          "hardenedRuntime": true
+        },
+        "osxNotarize": {
+          "appleId": "s@sebthedev.com",
+          "appleIdPassword": "@keychain:AC_PASSWORD"
+        },
+        "appBundleId": "com.sebthedev.macdropany",
+        "appCategoryType": "public.app-category.utilities"
       },
-      "makers": [
-        {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin"
-          ],
-          "config": {
-            "name": "MacDropAny"
-          }
+      "makers": [{
+        "name": "@electron-forge/maker-zip",
+        "platforms": [
+          "darwin"
+        ],
+        "config": {
+          "name": "MacDropAny"
         }
-      ]
+      }],
+      "publishers": [{
+        "name": "@electron-forge/publisher-github",
+        "config": {
+          "repository": {
+            "owner": "Zibity",
+            "name": "macdropany"
+          },
+          "prerelease": true
+        }
+      }]
     }
   }
 }
