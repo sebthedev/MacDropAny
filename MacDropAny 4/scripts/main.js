@@ -28,7 +28,10 @@ const createWindow = function () {
     },
     backgroundColor: '#F96167',
     titleBarStyle: 'hiddenInset',
-    show: false
+    show: false,
+    resizable: false,
+    title: 'MacDropAny',
+    fullscreenable: false
   })
 
   win.once('ready-to-show', () => {
