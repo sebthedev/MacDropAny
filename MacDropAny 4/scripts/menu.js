@@ -1,6 +1,7 @@
 const {
   app,
-  Menu
+  Menu,
+  shell
 } = require('electron')
 const strings = require('./strings')
 
@@ -8,17 +9,20 @@ console.log(`Attempting to set custom app menu in locale ${app.getLocale()}.`)
 
 const isMac = process.platform === 'darwin'
 
-const template = [
-  { role: 'appMenu' },
-  ...(isMac ? [{
+const menuItems = [
+  {
     label: app.name,
     submenu: [
       {
         role: 'about',
         label: strings.get('About MacDropAny')
       },
+      { type: 'separator' },
       {
-        label: strings.get('subtitle')
+        label: 'Donate to the creator of MacDropAny',
+        click: async () => {
+          await shell.openExternal('https://www.sebthedev.com/donate')
+        }
       },
       { type: 'separator' },
       { role: 'services' },
@@ -29,88 +33,26 @@ const template = [
       { type: 'separator' },
       { role: 'quit' }
     ]
-  }] : []),
-  // { role: 'fileMenu' }
-  {
-    label: 'File',
-    submenu: [
-      isMac ? { role: 'close' } : { role: 'quit' }
-    ]
   },
-  // { role: 'editMenu' }
   {
-    label: 'Edit',
-    submenu: [
-      { role: 'undo' },
-      { role: 'redo' },
-      { type: 'separator' },
-      { role: 'cut' },
-      { role: 'copy' },
-      { role: 'paste' },
-      ...(isMac ? [
-        { role: 'pasteAndMatchStyle' },
-        { role: 'delete' },
-        { role: 'selectAll' },
-        { type: 'separator' },
-        {
-          label: 'Speech',
-          submenu: [
-            { role: 'startspeaking' },
-            { role: 'stopspeaking' }
-          ]
-        }
-      ] : [
-        { role: 'delete' },
-        { type: 'separator' },
-        { role: 'selectAll' }
-      ])
-    ]
+    role: 'fileMenu'
   },
-  // { role: 'viewMenu' }
   {
-    label: 'View',
-    submenu: [
-      { role: 'reload' },
-      { role: 'forcereload' },
-      { role: 'toggledevtools' },
-      { type: 'separator' },
-      { role: 'resetzoom' },
-      { role: 'zoomin' },
-      { role: 'zoomout' },
-      { type: 'separator' },
-      { role: 'togglefullscreen' }
-    ]
-  },
-  // { role: 'windowMenu' }
-  {
-    label: 'Window',
-    submenu: [
-      { role: 'minimize' },
-      { role: 'zoom' },
-      ...(isMac ? [
-        { type: 'separator' },
-        { role: 'front' },
-        { type: 'separator' },
-        { role: 'window' }
-      ] : [
-        { role: 'close' }
-      ])
-    ]
+    role: 'editMenu'
   },
   {
     role: 'help',
     submenu: [
       {
-        label: 'Learn More',
+        label: 'Visit MacDropAny\'s website',
         click: async () => {
-          const { shell } = require('electron')
-          await shell.openExternal('https://electronjs.org')
+          await shell.openExternal('https://www.sebthedev.com/macdropany')
         }
       }
     ]
   }
 ]
 
-console.log(`creating menue in locale ${app.getLocale}.`)
-const menu = Menu.buildFromTemplate(template)
+console.log(`creating menu in locale ${app.getLocale}.`)
+const menu = Menu.buildFromTemplate(menuItems)
 Menu.setApplicationMenu(menu)
