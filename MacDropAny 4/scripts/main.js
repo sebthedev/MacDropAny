@@ -14,7 +14,7 @@ const updater = require('update-electron-app')
 
 // Run Updater
 updater({
-  'repo': 'sebthedev/MacDropAny'
+  repo: 'sebthedev/MacDropAny'
 })
 
 // Keep a global reference of the window object
