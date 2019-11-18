@@ -7,8 +7,6 @@ const strings = require('./strings')
 
 console.log(`Attempting to set custom app menu in locale ${app.getLocale()}.`)
 
-const isMac = process.platform === 'darwin'
-
 const menuItems = [
   {
     label: app.name,
@@ -19,7 +17,7 @@ const menuItems = [
       },
       { type: 'separator' },
       {
-        label: 'Donate to the creator of MacDropAny',
+        label: 'Donate to the Developer of MacDropAny',
         click: async () => {
           await shell.openExternal('https://www.sebthedev.com/donate')
         }
