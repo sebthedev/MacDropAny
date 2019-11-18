@@ -1,0 +1,172 @@
+/*
+grey: rgb(45, 49, 59)
+white: rgb(249, 249, 250)
+blue: rgb(0, 6, 46)
+black: rgb(14, 14, 12)
+
+light blue: rgb(23, 177, 221),
+tomato: rgb(180, 57, 45),
+black: rgb(0,0,3),
+*/
+
+/*
+BLUE: #89ABE3
+WHITE: #FCF6F5
+ */
+
+/*
+off-white: #deedf9;
+dark-blue: #2460a7;
+green: #24a0a7;
+grey: #566d84;
+  */
+
+body,
+html
+{
+    height: 100%;
+
+    -webkit-app-region: drag;
+}
+
+body
+{
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+
+    width: 100%;
+    margin: 0;
+
+    transition-duration: .5s;
+    transition-property: : background-color, color;
+    text-align: center;
+
+    color: #00223e;
+    background-color: #deedf9;
+}
+
+body.dark-mode
+{
+    color: #deedf9;
+    background-color: #0c2941;;
+}
+
+/* Title Bar */
+#titleBar
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 37px;
+
+    color: #fff;
+    background-color: #2460a7;
+}
+
+#titleBar h1
+{
+    font-size: 18px;
+
+    margin: 0;
+}
+
+/* Step Container Styling */
+.step-container
+{
+    padding: 10px;
+
+    cursor: pointer;
+    transition-duration: 200ms;
+    transition-property: background-color, color, border;
+
+    border-width: 2px;
+    border-style: dashed;
+    border-color: #566d84;
+    border-radius: 10px;
+}
+
+.step-title
+{
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.step-subtitle
+{
+    opacity: .75;
+}
+
+.step-container:hover,
+.step-container.is-dragover,
+.step-container.folder-chosen
+{
+    color: #fff;
+    border-style: solid;
+}
+
+.step-container:hover,
+.step-container.is-dragover
+{
+    border-color: #2460a7;
+    background-color: #2460a7;
+}
+
+.step-container.folder-chosen
+{
+    border-color: #24a0a7;
+    background-color: #24a0a7;
+}
+
+.step-container.is-dragover
+{
+    cursor: copy;
+    animation: pulse .2s infinite;
+    animation-direction: alternate;
+
+    border-style: dashed;
+}
+
+@keyframes pulse
+{
+    0%
+    {
+        border-color: white;
+    }
+    100%
+    {
+        border-color: #2460a7;
+    }
+}
+
+/* Sync Button */
+button
+{
+    -webkit-app-region: no-drag;
+}
+
+.btn-primary
+{
+    color: #deedf9;
+    color: #fff;
+    border: none;
+    background-color: #2460a7;
+}
+
+.btn-primary:not(:disabled):not(.disabled):hover,
+.btn-primary:not(:disabled):not(.disabled):active
+{
+    background-color: #24a0a7;
+}
+
+.btn-primary.focus,
+.btn-primary:focus
+{
+    box-shadow: none;
+}
+
+.btn-primary.disabled
+{
+    cursor: not-allowed;
+
+    background-color: #566d84;
+}

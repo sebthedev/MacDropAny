@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Hello World!</title>
+    <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="script-src 'self';"/> -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'none'"> -->
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="./../extensions/bootstrap/4.3.1/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../styles/style.css">
+
+    <!-- Scripts -->
+    <script>
+      window.$ = window.jQuery = require('jquery');
+      const Strings = require('../scripts/strings');
+    </script>
+    <script src="../scripts/renderer.js"></script>
+    <script>
+      window.$(document).ready(function () {
+        Strings.displayPageStrings()
+      })
+    </script>
+  </head>
+  <body>
+    <div id="titleBar">
+      <h1>MacDropAny</h1>
+    </div>
+    <div class="subtitle my-2" data-string="subtitle"></div>
+    <div class="container">
+      <div class="row step-container align-items-center folder-chooser my-3" data-folder-chooser-id="source">
+        <div class="col">
+          <div class="step-title">
+            Choose a folder to sync with the cloud
+          </div>
+          <div class="step-subtitle" data-string="step-subtitle-start">
+            Drop a folder here or click to choose a folder
+          </div>
+        </div>
+      </div>
+
+      <div class="row step-container align-items-center folder-chooser my-3" data-folder-chooser-id="target">
+        <div class="col">
+          <div class="step-title">
+            Choose where in the cloud to store the folder
+          </div>
+          <div class="step-subtitle" data-string="step-subtitle-start"></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <button type="button" class="btn btn-primary disabled" data-string="sync-folder" id="sync-button">
+            Sync Folder
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
