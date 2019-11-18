@@ -1,4 +1,3 @@
-console.log('started app macdropany')
 const {
   app,
   BrowserWindow,
