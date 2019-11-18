@@ -10,10 +10,12 @@ const basename = require('basename')
 const path = require('path')
 const strings = require('./strings')
 const cmd = require('node-cmd')
-// const updater = require('update-electron-app')
+const updater = require('update-electron-app')
 
 // Run Updater
-// updater()
+updater({
+  'repo': 'sebthedev/MacDropAny'
+})
 
 // Keep a global reference of the window object
 let win
