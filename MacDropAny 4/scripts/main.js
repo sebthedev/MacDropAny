@@ -147,3 +147,7 @@ const sendDarkModeStatus = function () {
   })
 }
 nativeTheme.on('updated', sendDarkModeStatus)
+
+app.setAboutPanelOptions({
+  credits: 'MacDropAny is built with care and dedication by Sebastian Hallum Clarke.\n\nThank you to the many generous supporters who have contributed their time, resources, and effort to improve MacDropAny.\n\nThanks to the Goose for her support.'
+})
