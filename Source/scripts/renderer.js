@@ -36,14 +36,14 @@ const chooseFolderClickHandler = function (event) {
 
 const folderChooserOptions = {
   source: {
-    message: strings.getString('Choose a folder to sync with the cloud'),
-    buttonLabel: strings.getString('Choose Folder'),
+    message: strings.get('choose-folder-source-message'),
+    buttonLabel: strings.get('choose-folder-button-label'),
     defaultPath: require('os').homedir(),
     properties: ['openDirectory']
   },
   target: {
-    message: strings.getString('Choose where in the cloud to sync this folder'),
-    buttonLabel: strings.getString('Choose Folder'),
+    message: strings.get('choose-folder-target-message'),
+    buttonLabel: strings.get('choose-folder-button-label'),
     defaultPath: require('os').homedir(),
     properties: ['openDirectory']
   }
@@ -66,9 +66,9 @@ ipcRenderer.on('folderChosen', (event, folderChooserID, paths) => {
     const folderChooserElement = $(`[data-folder-chooser-id="${folderChooserID}"]`)
     folderChooserElement.addClass('folder-chosen')
 
-    folderChooserElement.find('.step-title').text(strings.getString(`${folderChooserID}-folder-chooser-title-folder-chosen`, [folderName]))
+    folderChooserElement.find('.step-title').text(strings.get(`${folderChooserID}-folder-chooser-title-folder-chosen`, [folderName]))
 
-    folderChooserElement.find('.step-subtitle').text(strings.getString('step-subtitle-folder-selected'))
+    folderChooserElement.find('.step-subtitle').text(strings.get('step-subtitle-folder-selected'))
 
     updateSyncButton()
   }
@@ -80,11 +80,11 @@ const updateSyncButton = function () {
   syncButton.toggleClass('disabled', !syncConfigurationValidity)
 
   if (syncConfiguration.sourceFolder && syncConfiguration.targetFolder) {
-    syncButton.text(strings.getString('sync-button-source-target', [basename(syncConfiguration.sourceFolder), basename(syncConfiguration.targetFolder)]))
+    syncButton.text(strings.get('sync-button-source-target', [basename(syncConfiguration.sourceFolder), basename(syncConfiguration.targetFolder)]))
   } else if (syncConfiguration.sourceFolder) {
-    syncButton.text(strings.getString('sync-button-source', [basename(syncConfiguration.sourceFolder)]))
+    syncButton.text(strings.get('sync-button-source', [basename(syncConfiguration.sourceFolder)]))
   } else {
-    syncButton.text(strings.getString('sync-button'))
+    syncButton.text(strings.get('sync-button'))
   }
 }
 
@@ -99,9 +99,9 @@ const syncComplete = function (event, options) {
   const sourceFolderName = basename(options.sourceFolder)
   const targetFolderName = basename(options.targetFolder)
   ipcRenderer.send('displayDialog', {
-    message: strings.getString('$0 succesfully synced with $1', [sourceFolderName, targetFolderName]),
-    detail: strings.getString('MacDropAny succesfully synced $0 with $1. Any changes to $2 will now automatically be reflected in $3.', [sourceFolderName, targetFolderName, sourceFolderName, targetFolderName]),
-    buttons: [strings.getString('Show $0 in $1', [sourceFolderName, targetFolderName]), strings.getString('Close')],
+    message: strings.get('sync-complete-message', [sourceFolderName, targetFolderName]),
+    detail: strings.get('sync-complete-detail', [sourceFolderName, targetFolderName, sourceFolderName, targetFolderName]),
+    buttons: [strings.get('sync-complete-button-show-folder', [sourceFolderName, targetFolderName]), strings.get('close')],
     defaultId: 0,
     responseHandlerName: 'syncCompleteDialogDismissHandler',
     targetFolderPath: path.join(options.targetFolder, basename(options.sourceFolder))

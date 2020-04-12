@@ -1,12 +1,9 @@
 const fs = require('fs')
 const path = require('path')
-// const {
-//   app
-// } = require('electron')
 const electron = require('electron')
 const app = electron.app ? electron.app : electron.remote.app
 
-console.log(`Locale is ${app.getLocale()}.`)
+console.log(`Package locale is ${app.getLocale()}. App's ready status is ${app.isReady()}.`)
 
 const loadStrings = function () {
   const localeStringsPath = path.join(__dirname, '../strings/' + app.getLocale() + '.json')
@@ -41,10 +38,15 @@ const displayPageStrings = function (strings) {
   })
 }
 
+const getLocale = function () {
+  return app.getLocale()
+}
+
 module.exports = {
   displayPageStrings: function () {
     displayPageStrings(strings)
   },
   getString: getString,
-  get: getString
+  get: getString,
+  getLocale: getLocale
 }

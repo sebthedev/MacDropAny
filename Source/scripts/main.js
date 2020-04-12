@@ -8,9 +8,9 @@ const {
 const fs = require('fs')
 const basename = require('basename')
 const path = require('path')
-const strings = require('./strings')
 const cmd = require('node-cmd')
 const updater = require('update-electron-app')
+let strings
 
 // Run Updater
 updater({
@@ -24,7 +24,7 @@ const createWindow = function () {
   // Create the browser window.
   win = new BrowserWindow({
     width: 600,
-    height: 350,
+    height: 600,
     webPreferences: {
       nodeIntegration: true
     },
@@ -58,6 +58,14 @@ app.on('ready', createWindow)
 
 app.on('ready', function () {
   require('./menu')
+})
+
+app.on('ready', function () {
+  strings = require('./strings')
+
+  app.setAboutPanelOptions({
+    credits: strings.get('about-panel-credits')
+  })
 })
 
 // Quit when all windows are closed.
@@ -128,8 +136,8 @@ ipcMain.on('syncFolder', (event, options) => {
       console.log(err)
       return displayDialog({
         type: 'error',
-        message: 'An error occured while syncing the folder',
-        detail: strings.getString('MacDropAny was unable to sync the folder $0 with $1.\n\nError details: $2', [
+        message: strings.get('unable-to-sync-error-message'),
+        detail: strings.get('unable-to-sync-error-detail', [
           basename(sourcePath),
           basename(targetPath),
           err.message
@@ -165,7 +173,3 @@ const sendDarkModeStatus = function () {
   })
 }
 nativeTheme.on('updated', sendDarkModeStatus)
-
-app.setAboutPanelOptions({
-  credits: 'MacDropAny is built with care and dedication by Sebastian Hallum Clarke.\n\nThank you to the many generous supporters who have contributed their time, resources, and effort to improve MacDropAny.\n\nThanks to the Goose for her support.'
-})

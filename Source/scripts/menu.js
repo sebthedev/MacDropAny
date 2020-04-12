@@ -5,7 +5,7 @@ const {
 } = require('electron')
 const strings = require('./strings')
 
-console.log(`Attempting to set custom app menu in locale ${app.getLocale()}.`)
+console.log(`Attempting to set custom app menu in locale ${strings.getLocale()}.`)
 
 const menuItems = [
   {
@@ -13,11 +13,11 @@ const menuItems = [
     submenu: [
       {
         role: 'about',
-        label: strings.get('About MacDropAny')
+        label: strings.get('about-macdropany')
       },
       { type: 'separator' },
       {
-        label: 'Donate to the Developer of MacDropAny',
+        label: strings.get('donate-menu-item'),
         click: async () => {
           await shell.openExternal('https://www.sebthedev.com/donate')
         }
@@ -42,7 +42,7 @@ const menuItems = [
     role: 'help',
     submenu: [
       {
-        label: 'Visit MacDropAny\'s website',
+        label: strings.get('visit-macdropany-website'),
         click: async () => {
           await shell.openExternal('https://www.sebthedev.com/macdropany')
         }
@@ -51,6 +51,5 @@ const menuItems = [
   }
 ]
 
-console.log(`creating menu in locale ${app.getLocale}.`)
 const menu = Menu.buildFromTemplate(menuItems)
 Menu.setApplicationMenu(menu)
