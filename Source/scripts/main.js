@@ -88,6 +88,17 @@ const editACLs = function (sourcePath) {
   })
 }
 
+const lockSourceFolder = function (sourcePath) {
+  return new Promise(function (resolve, reject) {
+    cmd.get(`chflags -h uchg "${sourcePath}"`, function (err, data, stderr) {
+      if (err) {
+        console.log(err)
+      }
+      resolve()
+    })
+  })
+}
+
 ipcMain.on('syncFolder', (event, options) => {
   console.log(options)
   // TODO: validate options
@@ -106,6 +117,11 @@ ipcMain.on('syncFolder', (event, options) => {
     })
     .then(function () {
       console.log('Symlink complete!')
+
+      return lockSourceFolder(sourcePath)
+    })
+    .then(function () {
+      console.log('Lock Source Folder complete')
       event.sender.send('syncComplete', options)
     })
     .catch(function (err) {
