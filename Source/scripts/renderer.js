@@ -1,12 +1,25 @@
-const path = require('path')
 const {
   ipcRenderer,
   shell
 } = require('electron')
-const syncConfiguration = {}
+const uuid = require('uuid')
+const path = require('path')
+const basename = require('basename')
+const analytics = require('universal-analytics')
 const strings = require('./../scripts/strings')
 const syncer = require('./../scripts/syncer')
-const basename = require('basename')
+
+const syncConfiguration = {}
+
+// Set the userID if it does not already exist
+if (window.localStorage.getItem('userID') === null) {
+  window.localStorage.setItem('userID', uuid.v4())
+}
+
+// Log the pageview
+const visitor = analytics('UA-104306990-2', window.localStorage.getItem('userID'))
+visitor.set('userLanguage', navigator.language)
+visitor.pageview({ dp: '/', dt: 'Homescreen' }).send()
 
 // Make jQuery global
 let $ = function () {
@@ -51,6 +64,7 @@ const folderChooserOptions = {
 
 function chooseFolder (folderChooserID) {
   ipcRenderer.send('chooseFolder', folderChooserID, folderChooserOptions[folderChooserID])
+  visitor.event('Syncing a Folder', `Choose Folder: ${folderChooserID}`).send()
 }
 
 ipcRenderer.on('folderChosen', (event, folderChooserID, paths) => {
@@ -106,6 +120,7 @@ const syncComplete = function (event, options) {
     responseHandlerName: 'syncCompleteDialogDismissHandler',
     targetFolderPath: path.join(options.targetFolder, basename(options.sourceFolder))
   })
+  visitor.event('Syncing a Folder', 'Sync Complete').send()
 }
 ipcRenderer.on('syncComplete', syncComplete)
 
@@ -134,5 +149,4 @@ ipcRenderer.on('darkModeStatus', function (event, data) {
       $('body').removeClass('dark-mode')
     }
   }
-  console.log(data.msg)
 })
