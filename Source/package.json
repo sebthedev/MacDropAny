@@ -1,7 +1,7 @@
 {
   "name": "macdropany",
   "productName": "MacDropAny",
-  "version": "4.0.0-beta.1",
+  "version": "4.0.0-beta.2",
   "description": "Sync any folder on your computer with the cloud.",
   "main": "scripts/main.js",
   "scripts": {
