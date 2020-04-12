@@ -38,7 +38,6 @@ body
 
     transition-duration: .5s;
     transition-property: : background-color, color;
-    text-align: center;
 
     color: #00223e;
     background-color: #deedf9;

@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
+    <title>MacDropAny</title>
     <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
     <!-- <meta http-equiv="Content-Security-Policy" content="script-src 'self';"/> -->
     <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'none'"> -->
@@ -24,36 +24,46 @@
     </script>
   </head>
   <body>
+
     <div id="titleBar">
       <h1>MacDropAny</h1>
     </div>
-    <div class="subtitle my-2" data-string="subtitle"></div>
-    <div class="container">
-      <div class="row step-container align-items-center folder-chooser my-3" data-folder-chooser-id="source">
-        <div class="col">
-          <div class="step-title">
-            Choose a folder to sync with the cloud
-          </div>
-          <div class="step-subtitle" data-string="step-subtitle-start">
-            Drop a folder here or click to choose a folder
+    <!-- <div class="subtitle my-2" data-string="subtitle"></div> -->
+    <div class="container my-2">
+      <p class="text-center" data-string="subtitle"></p>
+      <!-- <h6 class="text-center font-weight-bold" data-string="prerequisites-title"></h6> -->
+      <h6 class="text-center font-weight-bold" data-string="how-macdropany-works-title"></h6>
+      <p class="text-justify" data-string="prerequisites-content"></p>
+      <p class="text-justify" data-string="how-macdropany-works-content"></p>
+
+      <div class="text-center">
+        <h6 class="text-center font-weight-bold" data-string="sync-your-folder-title"></h6>
+        <div class="row step-container align-items-center folder-chooser my-3" data-folder-chooser-id="source">
+          <div class="col">
+            <div class="step-title">
+              Choose a folder to sync with the cloud
+            </div>
+            <div class="step-subtitle" data-string="step-subtitle-start">
+              Drop a folder here or click to choose a folder
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="row step-container align-items-center folder-chooser my-3" data-folder-chooser-id="target">
-        <div class="col">
-          <div class="step-title">
-            Choose where in the cloud to store the folder
+        <div class="row step-container align-items-center folder-chooser my-3" data-folder-chooser-id="target">
+          <div class="col">
+            <div class="step-title">
+              Choose where in the cloud to store the folder
+            </div>
+            <div class="step-subtitle" data-string="step-subtitle-start"></div>
           </div>
-          <div class="step-subtitle" data-string="step-subtitle-start"></div>
         </div>
-      </div>
 
-      <div class="row">
-        <div class="col">
-          <button type="button" class="btn btn-primary disabled" data-string="sync-folder" id="sync-button">
-            Sync Folder
-          </button>
+        <div class="row">
+          <div class="col">
+            <button type="button" class="btn btn-primary disabled" data-string="sync-folder" id="sync-button">
+              Sync Folder
+            </button>
+          </div>
         </div>
       </div>
     </div>
