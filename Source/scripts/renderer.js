@@ -100,7 +100,7 @@ const syncComplete = function (event, options) {
   const targetFolderName = basename(options.targetFolder)
   ipcRenderer.send('displayDialog', {
     message: strings.getString('$0 succesfully synced with $1', [sourceFolderName, targetFolderName]),
-    detail: strings.getString('MacDropAny succesfully synced $0 with $1. Any changes to $2 will now automatically be reflected in $3', [sourceFolderName, targetFolderName, sourceFolderName, targetFolderName]),
+    detail: strings.getString('MacDropAny succesfully synced $0 with $1. Any changes to $2 will now automatically be reflected in $3.', [sourceFolderName, targetFolderName, sourceFolderName, targetFolderName]),
     buttons: [strings.getString('Show $0 in $1', [sourceFolderName, targetFolderName]), strings.getString('Close')],
     defaultId: 0,
     responseHandlerName: 'syncCompleteDialogDismissHandler',
