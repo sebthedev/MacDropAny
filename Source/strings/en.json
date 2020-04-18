@@ -1,6 +1,6 @@
 {
-  "about-macdropany":"About MacDropAny",
-  "visit-macdropany-website":"Visit MacDropAny's Website",
+  "about-macdropany": "About MacDropAny",
+  "visit-macdropany-website": "Visit MacDropAny's Website",
   "donate-menu-item": "Donate to the Developer of MacDropAny",
   "unable-to-sync-error-message": "An error occured while syncing the folder",
   "unable-to-sync-error-detail": "MacDropAny was unable to sync the folder $0 with $1.\n\nError details: $2",
@@ -54,5 +54,11 @@
   "step-subtitle-folder-selected": "Click to choose a different folder",
   "sync-folder": "Sync Folder",
   "sync-button-source-target": "Sync $0 with $1",
-  "sync-button-source": "Sync $0 with…"
+  "sync-button-source": "Sync $0 with…",
+  "error": "Error",
+  "source-folder-not-defined": "The source folder has not been set",
+  "target-folder-not-defined": "The target folder has not been set",
+  "source-and-target-are-same": "The source folder and target folder are the same",
+  "source-folder-contains-target-folder": "The target folder is inside the source folder",
+  "item-already-exists-in-target-with-same-name-as-source-folder": "A file or folder already exists inside the target folder with the same name as the source folder"
 }
