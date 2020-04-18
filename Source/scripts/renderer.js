@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
   $('#sync-button').click(syncStartHandler)
   $('.folder-chooser').click(chooseFolderClickHandler)
   manageDragAndDrop()
+  $('#footerBar').click(footerBarClickHandler)
 })
 
 const syncStartHandler = function () {
@@ -156,6 +157,10 @@ const manageDragAndDrop = function () {
   }).on('drop', function (e) {
     console.log(e.originalEvent.dataTransfer.files)
   })
+}
+
+const footerBarClickHandler = async () => {
+  await shell.openExternal('https://www.sebthedev.com/donate')
 }
 
 ipcRenderer.on('darkModeStatus', function (event, data) {

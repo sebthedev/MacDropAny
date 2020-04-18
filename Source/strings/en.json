@@ -11,7 +11,7 @@
   "sync-complete-message": "$0 succesfully synced with $1",
   "sync-complete-detail": "MacDropAny succesfully synced $0 with $1. Any changes to $2 will now automatically be reflected in $3.",
   "sync-complete-button-show-folder": "Show $0 in $1",
-  "close": "",
+  "close": "Close",
   "Edit": "Edit",
   "Undo": "Undo",
   "Redo": "Redo",
@@ -60,5 +60,6 @@
   "target-folder-not-defined": "The target folder has not been set",
   "source-and-target-are-same": "The source folder and target folder are the same",
   "source-folder-contains-target-folder": "The target folder is inside the source folder",
-  "item-already-exists-in-target-with-same-name-as-source-folder": "A file or folder already exists inside the target folder with the same name as the source folder"
+  "item-already-exists-in-target-with-same-name-as-source-folder": "A file or folder already exists inside the target folder with the same name as the source folder",
+  "donation-prompt": "If you like MacDropAny, please consider making a donation to the developer."
 }
