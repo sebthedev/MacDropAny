@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
 })
 
 const syncStartHandler = function () {
-  if (syncer.validateSyncConfiguration(syncConfiguration)) {
+  if (syncer.validateSyncConfiguration(syncConfiguration).valid) {
     ipcRenderer.send('syncFolder', syncConfiguration)
   }
 }
@@ -90,9 +90,26 @@ ipcRenderer.on('folderChosen', (event, folderChooserID, paths) => {
 
 const updateSyncButton = function () {
   const syncButton = $('#sync-button')
-  const syncConfigurationValidity = syncer.validateSyncConfiguration(syncConfiguration)
-  syncButton.toggleClass('disabled', !syncConfigurationValidity)
+  const syncErrorContainer = $('#sync-error-container')
+  const syncErrorMessage = $('#sync-error-message')
 
+  // Determine whether the sync configuration is valid
+  const syncConfigurationValidity = syncer.validateSyncConfiguration(syncConfiguration)
+
+  if (syncConfigurationValidity.valid) {
+    syncButton.removeClass('disabled')
+    syncErrorContainer.hide()
+  } else {
+    syncButton.addClass('disabled')
+
+    // Show an error message explaining why the sync configuration is invalid
+    if (syncConfigurationValidity.error !== syncer.errors.SOURCE_FOLDER_NOT_DEFINED && syncConfigurationValidity.error !== syncer.errors.TARGET_FOLDER_NOT_DEFINED) {
+      syncErrorMessage.text(strings.get(syncConfigurationValidity.error))
+      syncErrorContainer.show()
+    }
+  }
+
+  // Update the button text using the source and target folder names
   if (syncConfiguration.sourceFolder && syncConfiguration.targetFolder) {
     syncButton.text(strings.get('sync-button-source-target', [basename(syncConfiguration.sourceFolder), basename(syncConfiguration.targetFolder)]))
   } else if (syncConfiguration.sourceFolder) {
