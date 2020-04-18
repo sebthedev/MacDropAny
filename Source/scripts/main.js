@@ -28,7 +28,7 @@ const createWindow = function () {
     webPreferences: {
       nodeIntegration: true
     },
-    backgroundColor: '#F96167',
+    backgroundColor: '#deedf9',
     titleBarStyle: 'hiddenInset',
     show: false,
     resizable: false,
