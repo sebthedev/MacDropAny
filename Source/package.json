@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "basename": "^0.1.2",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "node-cmd": "^3.0.0",
     "universal-analytics": "^0.4.20",
     "update-electron-app": "^1.5.0",
